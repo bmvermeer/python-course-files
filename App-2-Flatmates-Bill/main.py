@@ -1,3 +1,6 @@
+import os.path
+import webbrowser
+
 from fpdf import FPDF
 
 class Bill:
@@ -54,14 +57,26 @@ class PdfReport:
         pdf.cell(w=0, h=20, txt=str(round(flatmate2.pays(bill, flatmate1),2)), border=1, ln=1)
 
         pdf.output(self.filename)
+        webbrowser.open('file://' + os.path.realpath(self.filename))
 
 
-bill = Bill(amount=120, period="March 2021")
-john = Flatmate(name="John", days_in_house=20)
-marry = Flatmate(name="Marry", days_in_house=25)
+amount = float(input("Hello what is the bill amount?"))
+period = input("What is the period of the bill e.g. April 2021")
+print("The amount is:", amount)
+print("The period is:", period)
 
-print(john.pays(bill, marry))
-print(marry.pays(bill, john))
+person1Name = input("What is your name?")
+person1Days = int(input("How many days where you in house?"))
+
+person2Name = input("What is your flatmates name?")
+person2Days = int(input("How many days was this person in house?"))
+
+bill = Bill(amount=amount, period=period)
+you = Flatmate(name=person1Name, days_in_house=person1Days)
+flatmate = Flatmate(name=person2Name, days_in_house=person2Days)
+
+print(f"{you.name} pays:", you.pays(bill, flatmate))
+print(f"{flatmate.name} pays:", flatmate.pays(bill, you))
 
 pdf = PdfReport('bill-'+bill.period+'.pdf')
-pdf.generate(john, marry, bill)
+pdf.generate(you, flatmate, bill)
