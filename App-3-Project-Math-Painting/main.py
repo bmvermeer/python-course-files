@@ -1,59 +1,55 @@
+from canvas import Canvas
+from shapes import Rectangle, Square
 
-from PIL import Image
-import numpy
+canvas_w = int(input("Canvas width: "))
+canvas_h = int(input("Canvas height: "))
 
+colors = {"white": (255,255,255), "black": (0,0,0)}
+canvas_color = input("Canvas color (black or white): ")
 
-class Square:
-    def __init__(self, x, y, side, color):
-        self.x = x
-        self.y = y
-        self.side = side
-        self.color = color
+canvas = Canvas(canvas_w, canvas_h, colors[canvas_color])
 
-    def draw(self, canvas):
-        canvas.data[self.x:(self.x + self.side), self.y : (self.y + self.side)] = self.color
+shape_colors = {"red": (255,0,0), "blue": (0,0,255), "green": (0,255,0), "yellow": (255,255,0), "orange": (255,128,0), "purple": (255,0,255)}
 
+def draw_rectangle():
+    rect_x = int(input("Rectangle X: "))
+    rect_y = int(input("Rectangle Y: "))
+    rect_width = int(input("Rectangle width: "))
+    rect_height = int(input("Rectangle heigth: "))
+    rect_color = input("Rectangle Color (red, blue, green, yellow, orange, purple: ")
+    rectangle1 = Rectangle(rect_x, rect_y, rect_width, rect_height, shape_colors[rect_color])
+    rectangle1.draw(canvas)
 
-    def __str__(self):
-        return f'Square [x={self.x} y={self.y} side={self.side} color={self.color}]'
+def draw_square():
+    sq_x = int(input("Square X: "))
+    sq_y = int(input("Square Y: "))
+    sq_side = int(input("Square side: "))
+    sq_color = input("Square Color (red, blue, green, yellow, orange, purple: ")
+    square1 = Square(sq_x, sq_y, sq_side, shape_colors[sq_color])
+    square1.draw(canvas)
 
+while True:
+    shape = input("What do you want to draw (rectangle | square | quit): ")
+    if shape.lower() == "rectangle":
+        draw_rectangle()
+    if shape.lower() == "square":
+        draw_square()
+    if shape.lower() == "quit":
+        break
 
-class Rectangle:
-    def __init__(self, x, y, width, height, color):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-
-    def draw(self, canvas):
-        canvas.data[self.x:(self.x + self.height), self.y:(self.y + self.width)] = self.color
-
-    def __str__(self):
-        return f'Rectangle [x={self.x} y={self.y} width={self.width} height={self.height} color={self.color}]'
-
-
-class Canvas:
-    def __init__(self, width, height, color):
-        self.width = width
-        self.height = height
-        self.color = color
-
-        self.data = numpy.zeros((self.width, self.height, 3), dtype=numpy.uint8)
-        self.data[:] = self.color
-
-    def make(self, imagepath):
-        img = Image.fromarray(self.data, 'RGB')
-        img.save(imagepath)
-
-
-canvas = Canvas(20, 30, (255, 255, 255))
-rectangle1 = Rectangle(1, 6, 7, 10, (0, 0, 255))
-rectangle1.draw(canvas)
-
-square1 = Square(5, 15, 8, (0, 255, 0))
-square1.draw(canvas)
 
 canvas.make("canvas.png")
+
+
+
+
+# canvas = Canvas(20, 30, (255, 255, 255))
+# rectangle1 = Rectangle(1, 6, 7, 10, (0, 0, 255))
+# rectangle1.draw(canvas)
+#
+# square1 = Square(5, 15, 8, (0, 255, 0))
+# square1.draw(canvas)
+#
+# canvas.make("canvas.png")
 
 
